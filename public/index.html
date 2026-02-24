@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalForge - Legal Automation Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { indigo: { 850: '#312e81' } },
+          animation: { 'float': 'float 6s ease-in-out infinite' }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+    .gradient-text { background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  </style>
+</head>
+<body class="bg-[#0a0a0f] min-h-screen text-white overflow-x">
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl -top-20 -left-20 animate-float"></div>
+    <div class="absolute w-96 h-96 bg-purple-600/20 rounded-full blur-3xl top-40 right-20 animate-float" style="animation-delay: -3s"></div>
+  </div>
+
+  <header class="relative z-10 glass sticky top-0 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-8 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <i class="fas fa-gavel text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold gradient-text">LegalForge</h1>
+          <p class="text-xs text-slate-400">Legal Automation Studio</p>
+        </div>
+      </div>
+      <button class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl font-semibold hover:opacity-90 transition shadow-lg shadow-indigo-500/30">
+        <i class="fas fa-plus mr-2"></i>New Contract
+      </button>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-8 py-10">
+    <!-- Stats -->
+    <div class="grid grid-cols-4 gap-6 mb-10">
+      {[
+        {icon:'fa-file-contract',label:'Contracts',val:'247',color:'indigo'},
+        {icon:'fa-check-circle',label:'Reviewed',val:'189',color:'green'},
+        {icon:'fa-exclamation-triangle',label:'Pending',val:'12',color:'yellow'},
+        {icon:'fa-clock',label:'Time Saved',val:'48h',color:'purple'}
+      ].map(s => `
+      <div class="glass rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-${s.color}-500/20 flex items-center justify-center">
+            <i class="fas ${s.icon} text-${s.color}-400"></i>
+          </div>
+          <span class="text-slate-400 text-sm">${s.label}</span>
+        </div>
+        <p class="text-4xl font-bold">${s.val}</p>
+      </div>
+      `).join('')}
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Contract Generator -->
+      <div class="glass rounded-2xl p-8">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+          <i class="fas fa-magic text-indigo-400"></i> Contract Generator
+        </h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-slate-400 text-sm mb-2">Contract Type</label>
+            <select class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white">
+              <option>NDA Agreement</option>
+              <option>Employment Contract</option>
+              <option>Service Agreement</option>
+              <option>Lease Agreement</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 text-sm mb-2">Parties</label>
+            <input placeholder="Enter party names..." class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder-slate-500">
+          </div>
+          <button class="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl font-semibold hover:opacity-90 transition">
+            <i class="fas fa-wand-magic-sparkles mr-2"></i>Generate Contract
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Contracts -->
+      <div class="col-span-2 glass rounded-2xl p-8">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+          <i class="fas fa-folder-open text-purple-400"></i> Recent Contracts
+        </h2>
+        <div class="space-y-4">
+          {[
+            {name:'NDA - Acme Corp',type:'NDA',status:'Ready',date:'2h ago'},
+            {name:'Employment - John Doe',type:'Employment',status:'Review',date:'Yesterday'},
+            {name:'Service Agreement',type:'Service',status:'Draft',date:'3 days ago'}
+          ].map(c => `
+          <div class="bg-white/5 rounded-xl p-5 flex items-center justify-between hover:bg-white/10 transition">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+                <i class="fas fa-file-contract text-indigo-400"></i>
+              </div>
+              <div>
+                <p class="font-semibold">${c.name}</p>
+                <p class="text-slate-400 text-sm">${c.type} • ${c.date}</p>
+              </div>
+            </div>
+            <span class="px-4 py-2 rounded-lg text-sm ${c.status==='Ready'?'bg-green-500/20 text-green-400':c.status==='Review'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400'}">${c.status}</span>
+          </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Integrations -->
+    <div class="mt-10 glass rounded-2xl p-8">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+        <i class="fas fa-plug text-blue-400"></i> Connectors
+      </h2>
+      <div class="flex flex-wrap gap-4">
+        {['Notion','DocuSign','HelloSign','Google Drive','Slack','Email'].map(c => `
+        <div class="px-5 py-3 bg-white/5 rounded-xl flex items-center gap-2 hover:bg-white/10 transition cursor-pointer">
+          <i class="fas fa-check-circle text-green-400"></i>
+          <span>${c}</span>
+        </div>
+        `).join('')}
+      </div>
+    </div>
+  </main>
+</body>
+</html>
